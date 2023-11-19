@@ -2,9 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '../Button';
 
-// import { RootState } from '../../store';
 import { removeTask, checkTask } from '../../store/TableStore';
-import store from '../../store';
 
 
 export interface TableColumn<T> {

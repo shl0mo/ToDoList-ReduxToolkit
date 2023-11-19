@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import TableReducer from './TableStore'; 
 
-export default configureStore({
+export const store =  configureStore({
 	reducer: {
 		table: TableReducer
 	}
 });
 
-// export type RootState = ReturnType<typeof store.getState>;
-// export default store;
+export const RootState = store.getState();
+export default store;
