@@ -41,7 +41,6 @@ const TableSlice = createSlice({
 			check_input.checked = true;
 			const task_name = task_td.innerHTML;
 			task_td.innerHTML = `<s>${task_td_innerHTML}</s>`;
-			check_button.style.setProperty('display', 'none');
 			state.history = [
 				...state.history,
 				{
