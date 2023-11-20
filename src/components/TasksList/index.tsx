@@ -5,7 +5,6 @@ import Button from '../Button';
 import Table from '../Table';
 
 
-import { RootState } from '../../store';
 import { addTask, updateTaskName, handleEnter } from '../../store/TableStore';
 import store from '../../store';
 
@@ -29,7 +28,7 @@ export default function TasksList () {
 			setTasks(store.getState().table.data)
 }} label={'Save'} background_color={'green'} color={'white'} borderRadius={'0px 5px 5px 0px'}/>
 			</div>
-			<Table data={tasks}/>
+			<Table data={tasks} setTasks={setTasks}/>
 		</>
 	)
 }

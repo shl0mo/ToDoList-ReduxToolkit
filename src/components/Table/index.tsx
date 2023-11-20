@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '../Button';
 
 import { removeTask, checkTask } from '../../store/TableStore';
+import store from '../../store';
 
 
 export interface TableColumn<T> {
@@ -12,6 +13,7 @@ export interface TableColumn<T> {
 
 interface TableProps<T> {
 	data: T[];
+	setTasks: Any;
 }
 
 export default function Table<T> (props: TableProps<T>) {
@@ -22,7 +24,7 @@ export default function Table<T> (props: TableProps<T>) {
 			<tbody>
 				{props.data.map((task, index) => {
 					return (
-						<tr key={`task-row-${index}`}>
+						<tr id={`task-row-${index}`}key={`task-row-${index}`}>
 							<td key={`task-checkbox-${index}`}>
 								<input onClick={() => dispatch(checkTask())} type={'checkbox'}/>
 							</td>
@@ -30,7 +32,10 @@ export default function Table<T> (props: TableProps<T>) {
 								{task.task_name}
 							</td>
 							<td key={`task-delete-button-${index}`}>
-								<Button onClick={() => dispatch(removeTask())} label={'remove'} background_color={'red'} color={'white'} borderRadius={'5px'}/>	
+								<Button onClick={() => {
+	dispatch(removeTask())
+	props.setTasks(store.getState().table.data)
+}} label={'remove'} background_color={'red'} color={'white'} borderRadius={'5px'}/>	
 							</td>
 						</tr>
 					);
