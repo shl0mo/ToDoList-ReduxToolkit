@@ -5,24 +5,55 @@ const TableSlice = createSlice({
 	name: 'table',
 	initialState: {
 		taskName: '',
-		data: []
+		data: [],
+		history: [],
+		namesCheckeds: []
 	},
 	reducers: {
 		removeTask: (state) => {
-			const tr = event.target.parentNode.parentNode;
-			const check_input = tr.children[0].children[0];
-			const trId = tr.id.split('-')[2];
-			if (check_input.checked) check_input.checked = false;
-			state.data.splice(trId, 1);
+			const delete_button = event.target;
+			const tr = delete_button.parentNode.parentNode;
+			const tr_id = parseInt(tr.id.split('-')[2]);
+			state.data.splice(tr_id, 1);
+			for (let i = 0; i < state.data.length; i++) {
+				const current_tr = document.querySelector(`#task-row-${i}`);
+				const current_check_button = current_tr.children[1].children[0];
+				if (current_check_button) current_check_button.style.setProperty('display', 'block');
+			}
+		},
+		keepChecked: (state) => {
+			for (let i = 0; i < state.data.length; i++) {
+				const current_tr = document.querySelector(`#task-row-${i}`);
+				const current_task_name = current_tr.children[0].innerText;
+				for (let j = 0; j < state.namesCheckeds.length; j++) {
+					if (state.namesCheckeds[j] === current_task_name) {
+						current_tr.children[0].innerHTML = `<s>${current_task_name}</s>`;
+					}
+				}
+			}
 		},
 		checkTask: (state) => {
-		       	const task_td_parent = event.target.parentNode.parentNode;
-			const check_input = task_td_parent.children[0].children[0];
-			const checked = check_input.checked
-	                const task_td = task_td_parent.children[1];
-	                const task_td_innerHTML = task_td.innerHTML;
-        	        if (!checked && task_td_innerHTML.includes('<s>')) task_td.innerHTML = task_td_innerHTML.replace('<s>', '');
-                	else if (checked && !task_td_innerHTML.includes('<s>')) task_td.innerHTML = `<s>${task_td_innerHTML}</s>`;
+			const check_button = event.target;
+		       	const task_td_parent = check_button.parentNode.parentNode;
+			const task_td = task_td_parent.children[0];
+			const task_td_innerHTML = task_td.innerHTML;
+			const check_input = task_td_parent.children[1].children[0];
+			check_input.checked = true;
+			const task_name = task_td.innerHTML;
+			task_td.innerHTML = `<s>${task_td_innerHTML}</s>`;
+			check_button.style.setProperty('display', 'none');
+			state.history = [
+				...state.history,
+				{
+					task_name: task_name,
+					finish_time: Date()
+				}
+			];
+			state.namesCheckeds = [
+				...state.namesCheckeds,
+				task_name
+			]
+			console.log(state.history);
 		},
 		addTask: (state) => {
 			if (state.taskName === '') {
@@ -50,9 +81,8 @@ const TableSlice = createSlice({
 		                state.data = [...state.data, new_task];
 			}
 		}
-				
 	}
 })
 
-export const { removeTask, checkTask, addTask, updateTaskName, handleEnter } = TableSlice.actions;
+export const { removeTask, checkTask, addTask, updateTaskName, handleEnter, keepChecked } = TableSlice.actions;
 export default TableSlice.reducer;

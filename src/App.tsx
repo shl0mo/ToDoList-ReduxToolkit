@@ -13,7 +13,7 @@ function App() {
   return (
 	<Provider store={store}>
 		<Container style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-			<Title title={'MyToDoList'}/>
+			<Title title={'React Todo App'}/>
 			<TasksList/>
 		</Container>
 	</Provider>
